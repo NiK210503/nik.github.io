@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { STUDIO_CONFIG } from '../data/studio';
+---
+<BaseLayout title="Liên hệ — NiK Studio" active="contact">
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 pt-12 space-y-6">
+    <h1 class="text-3xl font-extrabold text-white">Liên hệ & Hợp tác</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <a href={STUDIO_CONFIG.socials.telegram} target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-surface border border-white/[0.08] hover:border-cyan-400/40">Telegram: @nikvn21</a>
+      <a href={STUDIO_CONFIG.socials.tiktok} target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-surface border border-white/[0.08] hover:border-cyan-400/40">TikTok: @iamnik.21</a>
+      <a href={STUDIO_CONFIG.socials.facebook} target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-surface border border-white/[0.08] hover:border-cyan-400/40">Facebook: NiK</a>
+      <a href={STUDIO_CONFIG.socials.github} target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-surface border border-white/[0.08] hover:border-cyan-400/40">GitHub: nikstudiovn</a>
+    </div>
+  </section>
+</BaseLayout>

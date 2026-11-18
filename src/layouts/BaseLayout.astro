@@ -1,0 +1,97 @@
+---
+import { STUDIO_CONFIG } from '../data/studio';
+interface Props {
+  title?: string;
+  active?: 'home' | 'vix' | 'niksign' | 'music' | 'contact';
+}
+const { title = 'NiK Studio — Audio DSP & iOS Tools', active = 'home' } = Astro.props;
+const navItems = [
+  { id: 'home', href: '/', vi: 'Trang chủ', en: 'Home' },
+  { id: 'vix', href: '/vix', vi: 'VIX VST3', en: 'VIX VST3' },
+  { id: 'niksign', href: '/niksign', vi: 'NiKSign', en: 'NiKSign' },
+  { id: 'music', href: '/music', vi: 'Âm nhạc', en: 'Music' },
+  { id: 'contact', href: '/contact', vi: 'Liên hệ', en: 'Contact' }
+];
+---
+<!doctype html>
+<html lang="vi" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-obsidian text-slate-50 font-sans antialiased">
+    <header class="sticky top-0 z-40 bg-obsidian/75 backdrop-blur-xl border-b border-white/[0.06]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-2.5 group shrink-0">
+          <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-400/90 to-blue-600 flex items-center justify-center ring-1 ring-white/20">
+            <svg class="w-4 h-4 text-slate-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M2 12h3l2.5-7 4 14 3.5-10 2.5 3H22" />
+            </svg>
+          </span>
+          <span class="font-bold tracking-tight text-white text-base group-hover:text-cyan-300 transition-colors">{STUDIO_CONFIG.brand}</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-1 bg-white/[0.03] px-1.5 py-1 rounded-full border border-white/[0.07]">
+          {navItems.map((item) => (
+            <a
+              href={item.href}
+              data-vi={item.vi}
+              data-en={item.en}
+              class={`i18n-text px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all ${
+                active === item.id
+                  ? 'bg-cyan-400/15 text-cyan-300 ring-1 ring-cyan-400/30 font-semibold'
+                  : 'text-slate-400 hover:text-white hover:bg-white/[0.05]'
+              }`}
+            >
+              {item.vi}
+            </a>
+          ))}
+        </nav>
+
+        <button id="langToggle" type="button" class="px-3 py-1.5 rounded-full text-[11px] font-mono font-medium bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:border-cyan-400/50 hover:text-cyan-300 transition-all">
+          VI / EN
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="border-t border-white/[0.06] bg-obsidian/90 mt-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-slate-400">© 2026 {STUDIO_CONFIG.brand} ({STUDIO_CONFIG.domain})</p>
+        <div class="flex flex-wrap gap-2">
+          <a href={STUDIO_CONFIG.socials.tiktok} target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg text-xs bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:text-cyan-300">TikTok</a>
+          <a href={STUDIO_CONFIG.socials.facebook} target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg text-xs bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:text-cyan-300">Facebook</a>
+          <a href={STUDIO_CONFIG.socials.telegram} target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg text-xs bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:text-cyan-300">Telegram</a>
+          <a href={STUDIO_CONFIG.socials.github} target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg text-xs bg-white/[0.04] border border-white/[0.08] text-slate-300 hover:text-cyan-300">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        let lang = localStorage.getItem('nikstudio_lang') || 'vi';
+        function applyLang() {
+          document.querySelectorAll('.i18n-text').forEach((el) => {
+            const txt = el.getAttribute('data-' + lang);
+            if (txt) el.textContent = txt;
+          });
+          const btn = document.getElementById('langToggle');
+          if (btn) btn.textContent = lang === 'vi' ? 'VI → EN' : 'EN → VI';
+        }
+        document.getElementById('langToggle')?.addEventListener('click', () => {
+          lang = lang === 'vi' ? 'en' : 'vi';
+          localStorage.setItem('nikstudio_lang', lang);
+          applyLang();
+        });
+        applyLang();
+      })();
+    </script>
+  </body>
+</html>
